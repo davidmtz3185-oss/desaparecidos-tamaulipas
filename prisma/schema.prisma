@@ -1,0 +1,173 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pg_trgm]
+}
+
+enum EstadoCaso {
+  ACTIVO_PENDIENTE
+  ACTIVO
+  LOCALIZADO_VIVO
+  LOCALIZADO_FALLECIDO
+  RECHAZADO
+  ARCHIVADO
+}
+
+enum Relacion {
+  FAMILIAR
+  AMIGO
+  COLECTIVO
+  OTRO
+}
+
+enum Sexo {
+  MASCULINO
+  FEMENINO
+}
+
+model PersonaDesaparecida {
+  id                  String     @id @default(cuid())
+  nombre              String
+  edad                Int
+  sexo                Sexo
+  fechaDesaparicion   DateTime
+  municipio           String
+  colonia             String?
+  descripcionFisica   String
+  ultimaUbicacion     String?
+  latitud             Float?
+  longitud            Float?
+  estado              EstadoCaso @default(ACTIVO_PENDIENTE)
+  esMenor             Boolean    @default(false)
+  fechaRegistro       DateTime   @default(now())
+  validadoPorAdmin    Boolean    @default(false)
+  aprobadoEn          DateTime?
+
+  fotos               Foto[]
+  reportantes         Reportante[]
+  logs                AdminLog[]
+  recordatorios       Recordatorio[]
+  flagsComportamiento FlagComportamiento[]
+  informaciones       Informacion[]
+
+  @@index([nombre(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@index([municipio])
+  @@index([estado])
+  @@index([fechaDesaparicion])
+}
+
+model Foto {
+  id            String  @id @default(cuid())
+  personaId     String
+  urlCloudinary String
+  publicId      String
+  esPrincipal   Boolean @default(false)
+
+  persona PersonaDesaparecida @relation(fields: [personaId], references: [id], onDelete: Cascade)
+}
+
+model Reportante {
+  id                  String   @id @default(cuid())
+  personaId           String
+  nombre              String
+  telefono            String
+  email               String
+  relacion            Relacion
+  aceptaDatosPublicos Boolean
+  aceptaTimestamp     DateTime @default(now())
+  esTutorLegal        Boolean  @default(false)
+  tutorTimestamp      DateTime?
+  esSecundario        Boolean  @default(false)
+  tokenEdicion        String   @unique @default(cuid())
+
+  persona PersonaDesaparecida @relation(fields: [personaId], references: [id], onDelete: Cascade)
+
+  @@index([email])
+  @@index([telefono])
+}
+
+model SuscriptorAlerta {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  municipiosInteres String[]
+  activo            Boolean  @default(true)
+  fechaSuscripcion  DateTime @default(now())
+}
+
+model Donacion {
+  id                    String   @id @default(cuid())
+  monto                 Float
+  emailDonante          String?
+  fecha                 DateTime @default(now())
+  referenciaMercadoPago String?
+  estadoPago            String?
+}
+
+model AdminLog {
+  id                String   @id @default(cuid())
+  usuarioAdmin      String
+  accion            String
+  personaId         String?
+  fecha             DateTime @default(now())
+  estadoAnterior    String?
+  estadoNuevo       String?
+  camposModificados String?
+
+  persona PersonaDesaparecida? @relation(fields: [personaId], references: [id])
+}
+
+model Recordatorio {
+  id              String   @id @default(cuid())
+  personaId       String
+  reportanteEmail String
+  tipo            String
+  fechaEnvio      DateTime
+  respondido      Boolean  @default(false)
+
+  persona PersonaDesaparecida @relation(fields: [personaId], references: [id], onDelete: Cascade)
+}
+
+model FlagComportamiento {
+  id                  String   @id @default(cuid())
+  email               String?
+  telefono            String?
+  personaId           String?
+  casosRegistrados24h Int      @default(1)
+  fechaUltimoFlag     DateTime @default(now())
+  revisadoPorAdmin    Boolean  @default(false)
+
+  persona PersonaDesaparecida? @relation(fields: [personaId], references: [id])
+}
+
+model Informacion {
+  id        String   @id @default(cuid())
+  personaId String
+  nombre    String
+  telefono  String?
+  email     String?
+  mensaje   String
+  fecha     DateTime @default(now())
+
+  persona PersonaDesaparecida @relation(fields: [personaId], references: [id], onDelete: Cascade)
+}
+
+model LogContactoRevelado {
+  id        String   @id @default(cuid())
+  personaId String
+  ip        String?
+  fecha     DateTime @default(now())
+}
+
+model AdminUser {
+  id           String  @id @default(cuid())
+  email        String  @unique
+  passwordHash String
+  totpSecret   String?
+  totpEnabled  Boolean @default(false)
+  nombre       String
+}
