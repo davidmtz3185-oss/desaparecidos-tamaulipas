@@ -2,23 +2,29 @@ import { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 import { EstadoCaso } from '@prisma/client'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://desaparecidostamaulipas.mx'
 
-  const casos = await prisma.personaDesaparecida.findMany({
-    where: {
-      validadoPorAdmin: true,
-      estado: { in: [EstadoCaso.ACTIVO, EstadoCaso.LOCALIZADO_VIVO, EstadoCaso.LOCALIZADO_FALLECIDO] },
-    },
-    select: { id: true, fechaRegistro: true },
-  })
-
-  const casoUrls = casos.map(c => ({
-    url: `${APP_URL}/casos/${c.id}`,
-    lastModified: c.fechaRegistro,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+  let casoUrls: MetadataRoute.Sitemap = []
+  try {
+    const casos = await prisma.personaDesaparecida.findMany({
+      where: {
+        validadoPorAdmin: true,
+        estado: { in: [EstadoCaso.ACTIVO, EstadoCaso.LOCALIZADO_VIVO, EstadoCaso.LOCALIZADO_FALLECIDO] },
+      },
+      select: { id: true, fechaRegistro: true },
+    })
+    casoUrls = casos.map(c => ({
+      url: `${APP_URL}/casos/${c.id}`,
+      lastModified: c.fechaRegistro,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+  } catch {
+    // DB not available at build time — return static URLs only
+  }
 
   return [
     { url: APP_URL, lastModified: new Date(), changeFrequency: 'hourly', priority: 1 },
