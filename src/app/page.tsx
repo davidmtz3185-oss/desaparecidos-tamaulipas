@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { EstadoCaso } from '@prisma/client'
 import CasoCard from '@/components/CasoCard'
 
+export const dynamic = 'force-dynamic'
+
 export const revalidate = 3600 // revalidar cada hora
 
 async function getEstadisticas() {

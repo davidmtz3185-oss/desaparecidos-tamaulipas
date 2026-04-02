@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { EstadoCaso, Sexo } from '@prisma/client'
 import CasoCard from '@/components/CasoCard'
 import FiltrosBusqueda from '@/components/FiltrosBusqueda'
+
+export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
