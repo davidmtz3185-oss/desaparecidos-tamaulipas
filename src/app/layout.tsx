@@ -15,6 +15,8 @@ const geistMono = localFont({
   weight: '100 900',
 })
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://desaparecidostamaulipas.mx'
+
 export const metadata: Metadata = {
   title: {
     default: 'Desaparecidos Tamaulipas',
@@ -23,13 +25,23 @@ export const metadata: Metadata = {
   description:
     'Plataforma ciudadana para la búsqueda de personas desaparecidas en Tamaulipas, México. Reporta, busca y recibe alertas.',
   keywords: ['personas desaparecidas', 'Tamaulipas', 'búsqueda', 'Reynosa', 'Matamoros', 'Nuevo Laredo'],
+  metadataBase: new URL(APP_URL),
   openGraph: {
     type: 'website',
     locale: 'es_MX',
-    url: process.env.NEXT_PUBLIC_APP_URL,
+    url: APP_URL,
     siteName: 'Desaparecidos Tamaulipas',
+    title: 'Desaparecidos Tamaulipas — Búsqueda de personas',
+    description: 'Plataforma ciudadana para la búsqueda de personas desaparecidas en Tamaulipas. Reporta, busca y recibe alertas por tu municipio.',
+  },
+  twitter: {
+    card: 'summary_large_image',
     title: 'Desaparecidos Tamaulipas',
     description: 'Plataforma ciudadana para la búsqueda de personas desaparecidas en Tamaulipas.',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

@@ -21,7 +21,7 @@ const casos = [
       nombre: 'María López Vda. de Martínez',
       telefono: '8991234567',
       email: 'maria.lopez.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -41,7 +41,7 @@ const casos = [
       nombre: 'Roberto Hernández Castro',
       telefono: '8681234567',
       email: 'r.hernandez.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -60,7 +60,7 @@ const casos = [
       nombre: 'Lucía Sánchez de Torres',
       telefono: '8671234567',
       email: 'lucia.sanchez.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -80,7 +80,7 @@ const casos = [
       nombre: 'Sandra Reyes Morales',
       telefono: '8991239999',
       email: 'sandra.reyes.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -100,7 +100,7 @@ const casos = [
       nombre: 'Patricia Castillo Vda. de Ramírez',
       telefono: '8331234567',
       email: 'p.castillo.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -120,7 +120,7 @@ const casos = [
       nombre: 'Fernando Flores Ortiz',
       telefono: '8341234567',
       email: 'f.flores.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -140,7 +140,7 @@ const casos = [
       nombre: 'Claudia Moreno de Ruiz',
       telefono: '8681239988',
       email: 'claudia.moreno.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
   {
@@ -159,7 +159,7 @@ const casos = [
       nombre: 'Jorge Vázquez Luna',
       telefono: '8671238877',
       email: 'j.vazquez.test@ejemplo.com',
-      relacion: Relacion.FAMILIAR,
+      relacion: Relacion.FAMILIAR_DIRECTO,
     },
   },
 ]
@@ -206,8 +206,8 @@ async function main() {
   console.log('Creando suscriptores de prueba...')
   await prisma.suscriptorAlerta.createMany({
     data: [
-      { email: 'suscriptor1@ejemplo.com', municipiosInteres: ['Reynosa', 'Matamoros'] },
-      { email: 'suscriptor2@ejemplo.com', municipiosInteres: ['Nuevo Laredo'] },
+      { email: 'suscriptor1@ejemplo.com', municipio: 'Reynosa' },
+      { email: 'suscriptor2@ejemplo.com', municipio: 'Nuevo Laredo' },
     ],
   })
 

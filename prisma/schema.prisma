@@ -19,9 +19,11 @@ enum EstadoCaso {
 }
 
 enum Relacion {
-  FAMILIAR
+  FAMILIAR_DIRECTO
+  FAMILIAR_LEJANO
   AMIGO
-  COLECTIVO
+  CONOCIDO
+  AUTORIDAD
   OTRO
 }
 
@@ -75,8 +77,8 @@ model Reportante {
   id                  String   @id @default(cuid())
   personaId           String
   nombre              String
-  telefono            String
-  email               String
+  telefono            String?
+  email               String?
   relacion            Relacion
   aceptaDatosPublicos Boolean
   aceptaTimestamp     DateTime @default(now())
@@ -92,11 +94,13 @@ model Reportante {
 }
 
 model SuscriptorAlerta {
-  id                String   @id @default(cuid())
-  email             String   @unique
-  municipiosInteres String[]
-  activo            Boolean  @default(true)
-  fechaSuscripcion  DateTime @default(now())
+  id        String   @id @default(cuid())
+  email     String   @unique
+  municipio String
+  activo    Boolean  @default(true)
+  creadoEn  DateTime @default(now())
+
+  @@index([municipio])
 }
 
 model Donacion {
@@ -109,14 +113,14 @@ model Donacion {
 }
 
 model AdminLog {
-  id                String   @id @default(cuid())
-  usuarioAdmin      String
-  accion            String
-  personaId         String?
-  fecha             DateTime @default(now())
-  estadoAnterior    String?
-  estadoNuevo       String?
-  camposModificados String?
+  id             String   @id @default(cuid())
+  adminId        String
+  accion         String
+  descripcion    String?
+  personaId      String?
+  fecha          DateTime @default(now())
+  estadoAnterior String?
+  estadoNuevo    String?
 
   persona PersonaDesaparecida? @relation(fields: [personaId], references: [id])
 }
@@ -151,7 +155,8 @@ model Informacion {
   telefono  String?
   email     String?
   mensaje   String
-  fecha     DateTime @default(now())
+  leido     Boolean  @default(false)
+  createdAt DateTime @default(now())
 
   persona PersonaDesaparecida @relation(fields: [personaId], references: [id], onDelete: Cascade)
 }
@@ -170,4 +175,6 @@ model AdminUser {
   totpSecret   String?
   totpEnabled  Boolean @default(false)
   nombre       String
+  activo       Boolean @default(true)
+  rol          String  @default("ADMIN")
 }
