@@ -33,7 +33,7 @@ export default function Header() {
               Recibir alertas
             </Link>
             <Link href="/donar" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-              Donar
+              Apoyar
             </Link>
           </nav>
 
@@ -76,7 +76,7 @@ export default function Header() {
               Recibir alertas
             </Link>
             <Link href="/donar" className="py-2 text-gray-700 font-medium" onClick={() => setMenuOpen(false)}>
-              Donar
+              Apoyar
             </Link>
             <Link
               href="/reportar"

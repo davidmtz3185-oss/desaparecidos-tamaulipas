@@ -27,7 +27,7 @@ export default function Footer() {
               <li><Link href="/buscar" className="hover:text-white transition-colors">Buscar personas</Link></li>
               <li><Link href="/reportar" className="hover:text-white transition-colors">Reportar desaparecido</Link></li>
               <li><Link href="/suscribirse" className="hover:text-white transition-colors">Recibir alertas</Link></li>
-              <li><Link href="/donar" className="hover:text-white transition-colors">Donar</Link></li>
+              <li><Link href="/donar" className="hover:text-white transition-colors">Apoyar</Link></li>
             </ul>
           </div>
 

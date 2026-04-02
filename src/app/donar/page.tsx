@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Apoya la plataforma — Desaparecidos Tamaulipas',
-  description: 'Dona para mantener activa la plataforma ciudadana de búsqueda de personas desaparecidas en Tamaulipas.',
+  title: 'Apoya la plataforma',
+  description: 'Ayuda a mantener viva y actualizada la plataforma ciudadana de búsqueda de personas desaparecidas en Tamaulipas.',
 }
 
 // ─── DATOS BANCARIOS ────────────────────────────────────────────
@@ -26,16 +26,16 @@ export default function DonarPage() {
       <nav className="text-sm text-gray-500 mb-6 flex items-center gap-2">
         <Link href="/" className="hover:text-gray-700">Inicio</Link>
         <span>/</span>
-        <span className="text-gray-900">Apoya la plataforma</span>
+        <span className="text-gray-900">Apoyar</span>
       </nav>
 
       {/* Hero */}
       <div className="text-center mb-10">
         <div className="text-5xl mb-4">🤝</div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">Apoya esta plataforma</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-3">Ayuda a mantener viva esta plataforma</h1>
         <p className="text-gray-500 max-w-md mx-auto">
-          Esta es una iniciativa ciudadana <strong>sin fines de lucro</strong>. Tu donación ayuda
-          a mantener los servidores activos y seguir mejorando la plataforma.
+          Esta es una iniciativa ciudadana <strong>sin fines de lucro</strong>. Tu aportación cubre
+          los servidores y servicios necesarios para que siga funcionando y mejorando cada día.
         </p>
       </div>
 
